@@ -195,7 +195,8 @@ export class MemStorage implements IStorage {
 
     photoData.forEach((p) => {
       const id = randomUUID();
-      this.photos.set(id, { ...p, id });
+      const photo: Photo = { ...p, id, businessName: p.businessName ?? null };
+      this.photos.set(id, photo);
     });
   }
 
@@ -256,7 +257,7 @@ export class MemStorage implements IStorage {
 
   async createPhoto(photo: InsertPhoto): Promise<Photo> {
     const id = randomUUID();
-    const newPhoto: Photo = { ...photo, id };
+    const newPhoto: Photo = { ...photo, id, businessName: photo.businessName ?? null };
     this.photos.set(id, newPhoto);
     return newPhoto;
   }
