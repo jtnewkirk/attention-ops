@@ -23,6 +23,7 @@ export interface IStorage {
   // Missions
   getCurrentMission(): Promise<GeneratedMission | null>;
   getMissionCount(): Promise<number>;
+  getMissionHistory(): Promise<GeneratedMission[]>;
   createMission(mission: InsertGeneratedMission): Promise<GeneratedMission>;
   
   // Photos
@@ -240,6 +241,11 @@ export class MemStorage implements IStorage {
 
   async getMissionCount(): Promise<number> {
     return this.missionCount;
+  }
+
+  async getMissionHistory(): Promise<GeneratedMission[]> {
+    return Array.from(this.missions.values())
+      .sort((a, b) => b.missionNumber - a.missionNumber);
   }
 
   async createMission(mission: InsertGeneratedMission): Promise<GeneratedMission> {

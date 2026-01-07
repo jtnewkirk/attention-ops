@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Select,
   SelectContent,
@@ -13,7 +14,7 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
-import { Target, Crosshair, Smartphone, Copy, Check, Loader2, MessageSquare, Pen } from "lucide-react";
+import { Target, Crosshair, Smartphone, Copy, Check, Loader2, MessageSquare, Pen, History, ChevronRight } from "lucide-react";
 import { PLATFORM_OPTIONS, STYLE_OPTIONS, type GeneratedMission } from "@shared/schema";
 
 export default function Home() {
@@ -22,6 +23,7 @@ export default function Home() {
   const [topic, setTopic] = useState<string>("");
   const [style, setStyle] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [selectedHistoryMission, setSelectedHistoryMission] = useState<GeneratedMission | null>(null);
 
   const { data: missionCount = 0 } = useQuery<number>({
     queryKey: ["/api/missions/count"],
@@ -29,6 +31,10 @@ export default function Home() {
 
   const { data: currentMission, isLoading: missionLoading } = useQuery<GeneratedMission | null>({
     queryKey: ["/api/missions/current"],
+  });
+
+  const { data: missionHistory = [] } = useQuery<GeneratedMission[]>({
+    queryKey: ["/api/missions/history"],
   });
 
   const generateMutation = useMutation({
@@ -39,6 +45,8 @@ export default function Home() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/missions/current"] });
       queryClient.invalidateQueries({ queryKey: ["/api/missions/count"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/missions/history"] });
+      setSelectedHistoryMission(null);
       toast({
         title: "Mission Generated",
         description: "Your daily mission is ready. Execute with precision.",
@@ -65,9 +73,11 @@ export default function Home() {
     generateMutation.mutate({ platform, topic: topic.trim(), style });
   };
 
+  const displayedMission = selectedHistoryMission || currentMission;
+
   const copyToClipboard = async () => {
-    if (currentMission?.missionText) {
-      await navigator.clipboard.writeText(currentMission.missionText);
+    if (displayedMission?.missionText) {
+      await navigator.clipboard.writeText(displayedMission.missionText);
       setCopied(true);
       toast({
         title: "Copied",
@@ -177,18 +187,77 @@ export default function Home() {
         </CardContent>
       </Card>
 
-      {(currentMission || missionLoading) && (
-        <Card className="border-primary/50">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Mission History Sidebar */}
+        {missionHistory.length > 0 && (
+          <Card className="lg:col-span-1">
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center gap-2 text-lg">
+                <History className="w-4 h-4 text-primary" />
+                Mission History
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-0">
+              <ScrollArea className="h-[400px]" data-testid="scroll-mission-history">
+                <div className="px-4 pb-4 space-y-2">
+                  {missionHistory.map((mission) => (
+                    <button
+                      key={mission.id}
+                      onClick={() => setSelectedHistoryMission(
+                        selectedHistoryMission?.id === mission.id ? null : mission
+                      )}
+                      className={`w-full text-left p-3 rounded-md border transition-colors ${
+                        selectedHistoryMission?.id === mission.id
+                          ? "bg-primary/10 border-primary"
+                          : "bg-muted/30 border-border hover-elevate"
+                      }`}
+                      data-testid={`button-history-mission-${mission.id}`}
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1">
+                            <Badge variant="outline" className="text-xs">
+                              #{mission.missionNumber}
+                            </Badge>
+                            <Badge variant="secondary" className="text-xs">
+                              {PLATFORM_OPTIONS.find(p => p.value === mission.platform)?.label || mission.platform}
+                            </Badge>
+                          </div>
+                          <p className="text-sm text-muted-foreground truncate">
+                            {mission.missionText.split('\n')[0].substring(0, 40)}...
+                          </p>
+                        </div>
+                        <ChevronRight className={`w-4 h-4 text-muted-foreground flex-shrink-0 transition-transform ${
+                          selectedHistoryMission?.id === mission.id ? "rotate-90" : ""
+                        }`} />
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </ScrollArea>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Mission Display */}
+        <Card className={`border-primary/50 ${missionHistory.length > 0 ? 'lg:col-span-2' : 'lg:col-span-3'}`}>
           <CardHeader className="pb-4">
             <div className="flex items-center justify-between gap-4 flex-wrap">
               <CardTitle className="flex items-center gap-2 text-xl">
                 <Crosshair className="w-5 h-5 text-primary" />
-                Your Mission
+                {selectedHistoryMission ? "Previous Mission" : "Your Mission"}
               </CardTitle>
-              {currentMission && (
-                <Badge variant="secondary">
-                  {PLATFORM_OPTIONS.find(p => p.value === currentMission.platform)?.label || currentMission.platform}
-                </Badge>
+              {displayedMission && (
+                <div className="flex items-center gap-2 flex-wrap">
+                  {selectedHistoryMission && (
+                    <Badge variant="outline" className="font-mono">
+                      #{displayedMission.missionNumber}
+                    </Badge>
+                  )}
+                  <Badge variant="secondary">
+                    {PLATFORM_OPTIONS.find(p => p.value === displayedMission.platform)?.label || displayedMission.platform}
+                  </Badge>
+                </div>
               )}
             </div>
           </CardHeader>
@@ -197,31 +266,43 @@ export default function Home() {
               <div className="flex items-center justify-center py-8">
                 <Loader2 className="w-8 h-8 animate-spin text-primary" />
               </div>
-            ) : currentMission ? (
+            ) : displayedMission ? (
               <div className="space-y-4">
-                <div className="bg-muted/50 rounded-md p-6 border border-border">
-                  <pre className="text-base leading-relaxed whitespace-pre-wrap font-sans" data-testid="text-mission">
-                    {currentMission.missionText}
-                  </pre>
-                </div>
-                <Button
-                  variant="outline"
-                  onClick={copyToClipboard}
-                  className="w-full sm:w-auto"
-                  data-testid="button-copy-mission"
-                >
-                  {copied ? (
-                    <>
-                      <Check className="w-4 h-4 mr-2" />
-                      Copied
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-4 h-4 mr-2" />
-                      Copy Mission
-                    </>
+                <ScrollArea className="h-[350px]">
+                  <div className="bg-muted/50 rounded-md p-6 border border-border">
+                    <pre className="text-base leading-relaxed whitespace-pre-wrap font-sans" data-testid="text-mission">
+                      {displayedMission.missionText}
+                    </pre>
+                  </div>
+                </ScrollArea>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <Button
+                    variant="outline"
+                    onClick={copyToClipboard}
+                    data-testid="button-copy-mission"
+                  >
+                    {copied ? (
+                      <>
+                        <Check className="w-4 h-4 mr-2" />
+                        Copied
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-4 h-4 mr-2" />
+                        Copy Mission
+                      </>
+                    )}
+                  </Button>
+                  {selectedHistoryMission && (
+                    <Button
+                      variant="ghost"
+                      onClick={() => setSelectedHistoryMission(null)}
+                      data-testid="button-back-to-current"
+                    >
+                      Back to Current Mission
+                    </Button>
                   )}
-                </Button>
+                </div>
               </div>
             ) : (
               <div className="text-center py-8 text-muted-foreground">
@@ -231,9 +312,9 @@ export default function Home() {
             )}
           </CardContent>
         </Card>
-      )}
+      </div>
 
-      {!currentMission && !missionLoading && (
+      {!displayedMission && !missionLoading && missionHistory.length === 0 && (
         <div className="text-center py-12">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-muted mb-4">
             <Target className="w-8 h-8 text-muted-foreground" />

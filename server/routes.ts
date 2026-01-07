@@ -186,6 +186,12 @@ export async function registerRoutes(
     res.json(count);
   });
 
+  // Get mission history
+  app.get("/api/missions/history", async (req, res) => {
+    const missions = await storage.getMissionHistory();
+    res.json(missions);
+  });
+
   // Generate a new mission
   app.post("/api/missions/generate", async (req, res) => {
     const parsed = generateMissionSchema.safeParse(req.body);
