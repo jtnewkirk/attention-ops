@@ -1,0 +1,124 @@
+Hook + Solidification Mode (Final)
+What the Mission Generator Does
+
+When the user enters a topic and clicks Generate Mission, the generator must do exactly this:
+
+Create a curiosity-driven hook followed by 5–8 stand-alone bullets that prove the hook is true.
+
+No extra sections.
+No explanations.
+No filler.
+
+This is designed for viral social posts, especially Facebook and Instagram.
+
+Required Output Structure (Do Not Change)
+1) Hook
+
+1 or 2 lines only
+
+Must create curiosity or tension
+
+Must make the reader want proof
+
+Clear and confident
+
+No emojis
+
+No em dashes
+
+The hook should feel like a headline.
+
+2) Solidifying Bullets (5–8 bullets)
+
+These bullets exist for one reason:
+
+To confirm the hook is true.
+
+Bullet Rules (Very Important)
+
+5 to 8 bullets only
+
+NOT numbered
+
+Each bullet must stand alone
+
+No bullet depends on another
+
+No em dashes
+
+No filler words
+
+Each bullet should feel quotable
+
+Each bullet supports the hook from a different angle
+
+Each bullet should answer one of these:
+
+Why this is true
+
+What civilians usually lack
+
+What veterans already have
+
+What works better because of military experience
+
+Tone Rules
+
+Military mindset
+
+Calm confidence
+
+Leadership voice
+
+Not angry
+
+Not preachy
+
+Not motivational fluff
+
+Think:
+
+“Quiet confidence from someone who has seen pressure.”
+
+Writing Style Application
+
+The selected writing style only affects word choice and intensity, not structure.
+
+The format stays the same every time:
+Hook
+Bullets
+
+Example Mission Output
+
+Topic: Why veterans make better CEOs than civilians
+
+Hook (1–2 lines)
+
+Veterans do not become better CEOs by accident.
+They are trained for pressure long before business tests them.
+
+Solidifying Bullets
+
+• Veterans make decisions with limited information
+• Stress does not break focus, it sharpens it
+• Clear orders matter more than motivation
+• Responsibility is taken before credit is given
+• Team success comes before personal comfort
+• Adaptation happens without complaining
+• Failure becomes feedback instead of identity
+
+What the Generator Must Never Do
+
+Never explain the bullets
+
+Never add a CTA in this mode
+
+Never add hashtags
+
+Never number bullets
+
+Never use em dashes
+
+Never exceed two hook lines
+
+Never sound like a guru
