@@ -6,34 +6,34 @@ import { generateMissionSchema } from "@shared/schema";
 function generateMissionText(platform: string, topic: string, style: string): string {
   const hooks: Record<string, string[]> = {
     viral: [
-      `Veterans already know ${topic}.\nCivilians are still figuring it out.`,
-      `${topic} separates the prepared from the pretenders.`,
-      `The military taught ${topic} before business schools caught on.`,
+      `Veterans already understand ${topic}.\nCivilians are still catching up.`,
+      `${topic} looks different when pressure is not new to you.`,
+      `${topic} rewards those who were trained to perform under stress.`,
     ],
     controversial: [
-      `${topic} makes civilians uncomfortable.\nVeterans thrive in it.`,
-      `Most people avoid ${topic}.\nThat is exactly why they stay stuck.`,
-      `${topic} exposes who is ready and who is not.`,
+      `Most advice about ${topic} is wrong.\nHere is what actually works.`,
+      `${topic} does not need more motivation.\nIt needs better execution.`,
+      `Stop overcomplicating ${topic}.\nThe basics still win.`,
     ],
     educational: [
       `${topic} comes down to a few things that actually matter.`,
-      `${topic} rewards the ones who prepare.`,
-      `${topic} separates execution from excuses.`,
+      `${topic} works when you stop skipping the fundamentals.`,
+      `${topic} gets easier once you understand the process.`,
     ],
     professional: [
-      `${topic} follows patterns the unprepared never see.`,
       `${topic} favors discipline over talent.`,
       `${topic} rewards consistency, not intensity.`,
+      `${topic} follows patterns the unprepared never see.`,
     ],
     storytelling: [
-      `${topic} changed everything once I stopped overcomplicating it.`,
-      `${topic} made sense after I stopped listening to the wrong people.`,
-      `${topic} clicked when action replaced planning.`,
+      `${topic} clicked once I stopped overthinking it.`,
+      `${topic} made sense after I learned from doing, not reading.`,
+      `${topic} changed when I focused on one thing at a time.`,
     ],
     casual: [
       `${topic} is simpler than people make it.`,
-      `${topic} does not require permission.`,
-      `${topic} starts with doing, not thinking.`,
+      `${topic} does not require a perfect plan.`,
+      `${topic} starts with one step, not ten.`,
     ],
   };
 
@@ -91,11 +91,9 @@ function generateMissionText(platform: string, topic: string, style: string): st
 
   const formattedBullets = bullets.map(b => `• ${b}`).join('\n');
 
-  const mission = `${hook}
+  return `${hook}
 
 ${formattedBullets}`;
-
-  return mission;
 }
 
 export async function registerRoutes(
