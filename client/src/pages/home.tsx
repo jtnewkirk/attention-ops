@@ -213,9 +213,9 @@ export default function Home() {
             ) : currentMission ? (
               <div className="space-y-4">
                 <div className="bg-muted/50 rounded-md p-6 border border-border">
-                  <p className="text-lg leading-relaxed" data-testid="text-mission">
+                  <pre className="text-base leading-relaxed whitespace-pre-wrap font-sans" data-testid="text-mission">
                     {currentMission.missionText}
-                  </p>
+                  </pre>
                 </div>
                 <Button
                   variant="outline"
