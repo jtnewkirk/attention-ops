@@ -6,34 +6,34 @@ import { generateMissionSchema } from "@shared/schema";
 function generateMissionText(platform: string, topic: string, style: string): string {
   const hooks: Record<string, string[]> = {
     viral: [
-      `${topic} is not what most people think.\nThe real advantage comes from where you least expect it.`,
-      `Everyone talks about ${topic}.\nFew understand why veterans already have the edge.`,
-      `${topic} separates pretenders from performers.\nMilitary experience makes the difference clear.`,
+      `Veterans already know ${topic}.\nCivilians are still figuring it out.`,
+      `${topic} separates the prepared from the pretenders.`,
+      `The military taught ${topic} before business schools caught on.`,
     ],
     controversial: [
-      `Most people will never understand ${topic}.\nThey were never trained for it.`,
-      `${topic} is not taught in business school.\nIt is built under pressure.`,
-      `The truth about ${topic} makes civilians uncomfortable.\nVeterans already know it.`,
+      `${topic} makes civilians uncomfortable.\nVeterans thrive in it.`,
+      `Most people avoid ${topic}.\nThat is exactly why they stay stuck.`,
+      `${topic} exposes who is ready and who is not.`,
     ],
     educational: [
-      `${topic} works differently than most people assume.\nHere is what actually matters.`,
-      `Understanding ${topic} comes down to a few key things.\nMost people miss them.`,
-      `${topic} is simpler than experts make it sound.\nThe fundamentals never change.`,
+      `${topic} comes down to a few things that actually matter.`,
+      `${topic} rewards the ones who prepare.`,
+      `${topic} separates execution from excuses.`,
     ],
     professional: [
-      `${topic} follows patterns that most people ignore.\nThe data tells a clear story.`,
-      `Success in ${topic} is not random.\nIt comes from repeatable actions.`,
-      `${topic} rewards the prepared.\nConsistency outperforms talent.`,
+      `${topic} follows patterns the unprepared never see.`,
+      `${topic} favors discipline over talent.`,
+      `${topic} rewards consistency, not intensity.`,
     ],
     storytelling: [
-      `I learned the truth about ${topic} the hard way.\nThe lesson stuck.`,
-      `${topic} looked impossible until I saw it differently.\nExperience changed everything.`,
-      `What I know about ${topic} came from doing, not reading.\nHere is what I found.`,
+      `${topic} changed everything once I stopped overcomplicating it.`,
+      `${topic} made sense after I stopped listening to the wrong people.`,
+      `${topic} clicked when action replaced planning.`,
     ],
     casual: [
-      `${topic} is not as complicated as people make it.\nHere is the simple version.`,
-      `You do not need a degree to understand ${topic}.\nYou need the right mindset.`,
-      `${topic} comes down to a few things that actually work.\nThe rest is noise.`,
+      `${topic} is simpler than people make it.`,
+      `${topic} does not require permission.`,
+      `${topic} starts with doing, not thinking.`,
     ],
   };
 
@@ -102,37 +102,31 @@ export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
-  // Get all templates
   app.get("/api/templates", async (req, res) => {
     const templates = await storage.getTemplates();
     res.json(templates);
   });
 
-  // Get templates by category
   app.get("/api/templates/category/:category", async (req, res) => {
     const templates = await storage.getTemplatesByCategory(req.params.category);
     res.json(templates);
   });
 
-  // Get current mission
   app.get("/api/missions/current", async (req, res) => {
     const mission = await storage.getCurrentMission();
     res.json(mission);
   });
 
-  // Get mission count
   app.get("/api/missions/count", async (req, res) => {
     const count = await storage.getMissionCount();
     res.json(count);
   });
 
-  // Get mission history
   app.get("/api/missions/history", async (req, res) => {
     const missions = await storage.getMissionHistory();
     res.json(missions);
   });
 
-  // Generate a new mission
   app.post("/api/missions/generate", async (req, res) => {
     const parsed = generateMissionSchema.safeParse(req.body);
     if (!parsed.success) {
@@ -155,7 +149,6 @@ export async function registerRoutes(
     res.json(mission);
   });
 
-  // Get all photos
   app.get("/api/photos", async (req, res) => {
     const photos = await storage.getPhotos();
     res.json(photos);
