@@ -109,7 +109,7 @@ function Footer() {
         </div>
         
         <div className="border-t border-border mt-8 pt-6 text-center text-sm text-muted-foreground">
-          <p>Built for veterans, by veterans. Semper Fi.</p>
+          <p>Built for veterans, by veterans.</p>
         </div>
       </div>
     </footer>
