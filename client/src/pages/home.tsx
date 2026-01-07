@@ -3,6 +3,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -12,14 +13,16 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
-import { Target, Clock, Crosshair, Smartphone, Copy, Check, Loader2 } from "lucide-react";
-import { GOAL_OPTIONS, PLATFORM_OPTIONS, TIME_OPTIONS, type GeneratedMission } from "@shared/schema";
+import { Target, Clock, Crosshair, Smartphone, Copy, Check, Loader2, MessageSquare, Pen } from "lucide-react";
+import { GOAL_OPTIONS, PLATFORM_OPTIONS, TIME_OPTIONS, STYLE_OPTIONS, type GeneratedMission } from "@shared/schema";
 
 export default function Home() {
   const { toast } = useToast();
   const [timeMinutes, setTimeMinutes] = useState<number | null>(null);
   const [goal, setGoal] = useState<string | null>(null);
   const [platform, setPlatform] = useState<string | null>(null);
+  const [topic, setTopic] = useState<string>("");
+  const [style, setStyle] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
   const { data: missionCount = 0 } = useQuery<number>({
@@ -31,7 +34,7 @@ export default function Home() {
   });
 
   const generateMutation = useMutation({
-    mutationFn: async (data: { timeMinutes: number; goal: string; platform: string }) => {
+    mutationFn: async (data: { timeMinutes: number; goal: string; platform: string; topic: string; style: string }) => {
       const response = await apiRequest("POST", "/api/missions/generate", data);
       return response.json();
     },
@@ -53,15 +56,15 @@ export default function Home() {
   });
 
   const handleGenerate = () => {
-    if (!timeMinutes || !goal || !platform) {
+    if (!timeMinutes || !goal || !platform || !topic.trim() || !style) {
       toast({
         title: "Incomplete Intel",
-        description: "Select your time, goal, and platform to proceed.",
+        description: "Fill in all fields to proceed.",
         variant: "destructive",
       });
       return;
     }
-    generateMutation.mutate({ timeMinutes, goal, platform });
+    generateMutation.mutate({ timeMinutes, goal, platform, topic: topic.trim(), style });
   };
 
   const copyToClipboard = async () => {
@@ -76,7 +79,7 @@ export default function Home() {
     }
   };
 
-  const isFormComplete = timeMinutes && goal && platform;
+  const isFormComplete = timeMinutes && goal && platform && topic.trim() && style;
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
@@ -89,7 +92,7 @@ export default function Home() {
           Daily Mission Generator
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Select your available time, goal, and platform. Receive your mission. Execute.
+          Built for U.S. military veterans transitioning into business and content.
         </p>
       </div>
 
@@ -101,22 +104,53 @@ export default function Home() {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium flex items-center gap-2">
+                <Smartphone className="w-4 h-4 text-muted-foreground" />
+                Platform
+              </label>
+              <Select value={platform || ""} onValueChange={setPlatform}>
+                <SelectTrigger data-testid="select-platform">
+                  <SelectValue placeholder="Select platform" />
+                </SelectTrigger>
+                <SelectContent>
+                  {PLATFORM_OPTIONS.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium flex items-center gap-2">
+                <MessageSquare className="w-4 h-4 text-muted-foreground" />
+                Topic
+              </label>
+              <Input
+                placeholder="e.g., Building online income, Networking tips"
+                value={topic}
+                onChange={(e) => setTopic(e.target.value)}
+                data-testid="input-topic"
+              />
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="space-y-2">
               <label className="text-sm font-medium flex items-center gap-2">
-                <Clock className="w-4 h-4 text-muted-foreground" />
-                Available Time
+                <Pen className="w-4 h-4 text-muted-foreground" />
+                Writing Style
               </label>
-              <Select
-                value={timeMinutes?.toString() || ""}
-                onValueChange={(value) => setTimeMinutes(parseInt(value))}
-              >
-                <SelectTrigger data-testid="select-time">
-                  <SelectValue placeholder="Select time" />
+              <Select value={style || ""} onValueChange={setStyle}>
+                <SelectTrigger data-testid="select-style">
+                  <SelectValue placeholder="Select style" />
                 </SelectTrigger>
                 <SelectContent>
-                  {TIME_OPTIONS.map((option) => (
-                    <SelectItem key={option.value} value={option.value.toString()}>
+                  {STYLE_OPTIONS.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
                       {option.label}
                     </SelectItem>
                   ))}
@@ -145,16 +179,19 @@ export default function Home() {
 
             <div className="space-y-2">
               <label className="text-sm font-medium flex items-center gap-2">
-                <Smartphone className="w-4 h-4 text-muted-foreground" />
-                Platform
+                <Clock className="w-4 h-4 text-muted-foreground" />
+                Available Time
               </label>
-              <Select value={platform || ""} onValueChange={setPlatform}>
-                <SelectTrigger data-testid="select-platform">
-                  <SelectValue placeholder="Select platform" />
+              <Select
+                value={timeMinutes?.toString() || ""}
+                onValueChange={(value) => setTimeMinutes(parseInt(value))}
+              >
+                <SelectTrigger data-testid="select-time">
+                  <SelectValue placeholder="Select time" />
                 </SelectTrigger>
                 <SelectContent>
-                  {PLATFORM_OPTIONS.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
+                  {TIME_OPTIONS.map((option) => (
+                    <SelectItem key={option.value} value={option.value.toString()}>
                       {option.label}
                     </SelectItem>
                   ))}
@@ -253,7 +290,7 @@ export default function Home() {
           </div>
           <h3 className="text-lg font-semibold mb-2">Ready for Your Mission?</h3>
           <p className="text-muted-foreground max-w-md mx-auto">
-            Select your parameters above and click "Generate Mission" to receive your daily objective.
+            Fill in your parameters above and click "Generate Mission" to receive your daily objective.
           </p>
         </div>
       )}
