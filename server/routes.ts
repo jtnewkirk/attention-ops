@@ -45,12 +45,12 @@ function getPlatformBehavior(platform: string): { tone: string; suffix: string; 
   return behaviors[platform] || behaviors.in_person;
 }
 
-function getStyleModifier(style: string): { hookPrefix: string; executionStyle: string } {
-  const modifiers: Record<string, { hookPrefix: string; executionStyle: string }> = {
-    direct: { hookPrefix: "", executionStyle: "Action items. No fluff." },
-    motivational: { hookPrefix: "You've got this.\n", executionStyle: "Steps to victory." },
-    tactical: { hookPrefix: "", executionStyle: "Detailed tactical breakdown." },
-    storytelling: { hookPrefix: "Picture this...\n", executionStyle: "Your path forward." },
+function getStyleModifier(style: string): { hookPrefix: string } {
+  const modifiers: Record<string, { hookPrefix: string }> = {
+    direct: { hookPrefix: "" },
+    motivational: { hookPrefix: "You've got this.\n" },
+    tactical: { hookPrefix: "" },
+    storytelling: { hookPrefix: "Picture this...\n" },
   };
   return modifiers[style] || modifiers.direct;
 }
@@ -68,150 +68,58 @@ function formatPlatform(platform: string): string {
   return platformNames[platform] || platform;
 }
 
-function generateMissionText(timeMinutes: number, goal: string, platform: string, topic: string, style: string): string {
+function generateMissionText(platform: string, topic: string, style: string): string {
   const platformBehavior = getPlatformBehavior(platform);
   const styleModifier = getStyleModifier(style);
   const platformName = formatPlatform(platform);
   
-  const goalData: Record<string, { opName: string; situation: string; mission: string; hooks: string[]; executions: string[][] }> = {
-    grow_audience: {
-      opName: "OPERATION: AUDIENCE GROWTH",
-      situation: `You have ${timeMinutes} minutes. Topic: ${topic}. Platform: ${platformName}.`,
-      mission: `Grow your reach with content about ${topic}. Help veterans take action and feel confident.`,
-      hooks: [
-        `Most vets post and pray.\nTop 1% post with a plan.`,
-        `Your audience is waiting.\nStop making them wait.`,
-        `You served your country.\nNow serve your audience.`,
-      ],
-      executions: [
-        [
-          `Create one post about ${topic} that provides real value.`,
-          `Find 5 veterans or entrepreneurs posting similar content. Engage genuinely.`,
-          `Follow 10 accounts in your target market.`,
-          `Reply to 3 comments on your recent posts.`,
-          `End your content with a question to drive engagement.`,
-        ],
-        [
-          `Share a lesson from your military experience that connects to ${topic}.`,
-          `Tag 2 people who need to hear your message.`,
-          `Engage with 5 trending posts in your industry.`,
-          `Use platform-specific features (stories, polls, threads).`,
-          `Schedule your next piece of content before logging off.`,
-        ],
-      ],
-    },
-    make_sales: {
-      opName: "OPERATION: REVENUE",
-      situation: `${timeMinutes} minutes on the clock. Topic: ${topic}. Time to close.`,
-      mission: `Start sales conversations around ${topic}. Help veterans take action today.`,
-      hooks: [
-        `Likes don't pay bills.\nSales do.`,
-        `You didn't join the military to play small.\nDon't start now.`,
-        `Stop waiting for permission.\nStart making money.`,
-      ],
-      executions: [
-        [
-          `Review your warm leads list. Pick 5 names interested in ${topic}.`,
-          `Send personalized outreach referencing their specific situation.`,
-          `Ask one qualifying question to understand their pain.`,
-          `Follow up on any open conversations.`,
-          `Log every interaction. Track what works.`,
-        ],
-        [
-          `Identify your hottest lead interested in ${topic}.`,
-          `Send them a message with a clear next step.`,
-          `Handle objections with facts, not feelings.`,
-          `Create urgency with a deadline or bonus.`,
-          `Confirm the call or payment before you log off.`,
-        ],
-      ],
-    },
-    build_network: {
-      opName: "OPERATION: CONNECT",
-      situation: `${timeMinutes} minutes to build relationships. Topic: ${topic}.`,
-      mission: `Expand your network with people who care about ${topic}. Build trust.`,
-      hooks: [
-        `Your network is your net worth.\nTime to expand it.`,
-        `In the military, you had a unit.\nIn business, you need a network.`,
-        `The right connection changes everything.\nGo find them.`,
-      ],
-      executions: [
-        [
-          `Search for 5 people discussing ${topic} that you'd want to know.`,
-          `Send personalized connection requests. No templates.`,
-          `Mention something specific about their work.`,
-          `Engage with their recent content before reaching out.`,
-          `Set a follow-up reminder for next week.`,
-        ],
-        [
-          `Message 3 people you haven't talked to in 30+ days about ${topic}.`,
-          `Congratulate someone on a recent win.`,
-          `Offer help or a resource without asking for anything.`,
-          `Find 2 new people in complementary industries.`,
-          `Set up one virtual coffee chat for this week.`,
-        ],
-      ],
-    },
-    learn_skill: {
-      opName: "OPERATION: UPSKILL",
-      situation: `${timeMinutes} minutes of focused learning. Topic: ${topic}.`,
-      mission: `Master one concept about ${topic} and apply it immediately.`,
-      hooks: [
-        `The best operators never stop training.\nNeither should you.`,
-        `You trained for war.\nNow train for wealth.`,
-        `Knowledge without action is just entertainment.\nTime to learn AND apply.`,
-      ],
-      executions: [
-        [
-          `Find the best free resource about ${topic} (YouTube, article, course).`,
-          `Block all distractions. This is focused time.`,
-          `Take notes on 3 key takeaways.`,
-          `Apply one concept to your business today.`,
-          `Share what you learned with your audience.`,
-        ],
-        [
-          `Read or watch content about ${topic} for ${Math.floor(timeMinutes * 0.7)} minutes.`,
-          `Write down one thing you can implement today.`,
-          `Teach the concept to someone else in your own words.`,
-          `Identify gaps in your knowledge for next time.`,
-          `Schedule your next learning block before you stop.`,
-        ],
-      ],
-    },
-    create_content: {
-      opName: "OPERATION: CREATE",
-      situation: `${timeMinutes} minutes to create. Topic: ${topic}. Platform: ${platformName}.`,
-      mission: `Publish one piece of high-value content about ${topic} that helps veterans take action.`,
-      hooks: [
-        `Content is your 24/7 salesperson.\nTime to put it to work.`,
-        `Your story is your superpower.\nTell it.`,
-        `Stop consuming. Start creating.\nYour audience needs you.`,
-      ],
-      executions: [
-        [
-          `Pick one angle on ${topic} you can speak on with authority.`,
-          `Outline 3 key points your audience needs to hear.`,
-          `Create the content (post, video, or article).`,
-          `Add a clear call-to-action at the end.`,
-          `Publish and engage with the first 5 commenters.`,
-        ],
-        [
-          `Think of a moment that shaped your perspective on ${topic}.`,
-          `Write it in 5 sentences or less. Keep it tight.`,
-          `Connect the story to a lesson your audience can use.`,
-          `End with a question to spark conversation.`,
-          `Post and reply to every comment within the hour.`,
-        ],
-      ],
-    },
-  };
+  const hooks = [
+    `Most vets post and pray.\nTop 1% post with a plan.`,
+    `Your audience is waiting.\nStop making them wait.`,
+    `You served your country.\nNow serve your audience.`,
+    `Likes don't pay bills.\nSales do.`,
+    `Your network is your net worth.\nTime to expand it.`,
+    `Content is your 24/7 salesperson.\nTime to put it to work.`,
+    `Your story is your superpower.\nTell it.`,
+    `Stop consuming. Start creating.\nYour audience needs you.`,
+  ];
 
-  const data = goalData[goal] || goalData.grow_audience;
-  const hookIndex = Math.floor(Math.random() * data.hooks.length);
-  const execIndex = Math.floor(Math.random() * data.executions.length);
+  const executions = [
+    [
+      `Create one post about ${topic} that provides real value.`,
+      `Find 5 veterans or entrepreneurs posting similar content. Engage genuinely.`,
+      `Share a lesson from your military experience that connects to ${topic}.`,
+      `End your content with a question to drive engagement.`,
+      `Reply to every comment within the first hour.`,
+    ],
+    [
+      `Write a hook that stops the scroll. Make it about ${topic}.`,
+      `Share 3 actionable tips your audience can use today.`,
+      `Tag 2 people who need to hear your message.`,
+      `Use platform-specific features (stories, polls, threads).`,
+      `Schedule your next piece of content before logging off.`,
+    ],
+    [
+      `Pick one angle on ${topic} you can speak on with authority.`,
+      `Outline 3 key points your audience needs to hear.`,
+      `Create the content (post, video, or article).`,
+      `Add a clear call-to-action at the end.`,
+      `Publish and engage with the first 5 commenters.`,
+    ],
+    [
+      `Think of a moment that shaped your perspective on ${topic}.`,
+      `Write it in 5 sentences or less. Keep it tight.`,
+      `Connect the story to a lesson your audience can use.`,
+      `End with a question to spark conversation.`,
+      `Post and reply to every comment within the hour.`,
+    ],
+  ];
+
+  const hookIndex = Math.floor(Math.random() * hooks.length);
+  const execIndex = Math.floor(Math.random() * executions.length);
   
-  const hook = styleModifier.hookPrefix + data.hooks[hookIndex];
-  const execution = data.executions[execIndex];
+  const hook = styleModifier.hookPrefix + hooks[hookIndex];
+  const execution = executions[execIndex];
   
   const roe = platform === "instagram" 
     ? `${platformName} rewards engagement. Post at peak hours and reply to every comment fast.`
@@ -225,13 +133,15 @@ function generateMissionText(timeMinutes: number, goal: string, platform: string
 
   const formattedMission = `${hook}
 
-${data.opName}
+OPERATION: CONTENT DEPLOY
 
 SITUATION:
-${data.situation}
+Platform: ${platformName}. Topic: ${topic}.
+Audience: U.S. military veterans transitioning into business and content.
+Goal: Help them take action today and feel confident.
 
 MISSION:
-${data.mission}
+Create and publish one piece of high-value content about ${topic}.
 
 EXECUTION:
 • ${execution[0]}
@@ -283,13 +193,13 @@ export async function registerRoutes(
       return res.status(400).json({ error: "Invalid mission parameters", details: parsed.error.errors });
     }
 
-    const { timeMinutes, goal, platform, topic, style } = parsed.data;
-    const missionText = generateMissionText(timeMinutes, goal, platform, topic, style);
+    const { platform, topic, style } = parsed.data;
+    const missionText = generateMissionText(platform, topic, style);
 
     const mission = await storage.createMission({
       missionText,
-      timeMinutes,
-      goal,
+      timeMinutes: 30, // Default value
+      goal: "create_content", // Default value
       platform,
       missionNumber: 0,
     });

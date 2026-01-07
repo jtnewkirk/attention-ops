@@ -70,8 +70,6 @@ export type Photo = typeof photos.$inferSelect;
 
 // Form schemas for mission generation
 export const generateMissionSchema = z.object({
-  timeMinutes: z.number().min(5).max(120),
-  goal: z.enum(["grow_audience", "make_sales", "build_network", "learn_skill", "create_content"]),
   platform: z.enum(["linkedin", "instagram", "twitter", "facebook", "email", "phone", "in_person"]),
   topic: z.string().min(1).max(100),
   style: z.enum(["direct", "motivational", "tactical", "storytelling"]),

@@ -13,13 +13,11 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
-import { Target, Clock, Crosshair, Smartphone, Copy, Check, Loader2, MessageSquare, Pen } from "lucide-react";
-import { GOAL_OPTIONS, PLATFORM_OPTIONS, TIME_OPTIONS, STYLE_OPTIONS, type GeneratedMission } from "@shared/schema";
+import { Target, Crosshair, Smartphone, Copy, Check, Loader2, MessageSquare, Pen } from "lucide-react";
+import { PLATFORM_OPTIONS, STYLE_OPTIONS, type GeneratedMission } from "@shared/schema";
 
 export default function Home() {
   const { toast } = useToast();
-  const [timeMinutes, setTimeMinutes] = useState<number | null>(null);
-  const [goal, setGoal] = useState<string | null>(null);
   const [platform, setPlatform] = useState<string | null>(null);
   const [topic, setTopic] = useState<string>("");
   const [style, setStyle] = useState<string | null>(null);
@@ -34,7 +32,7 @@ export default function Home() {
   });
 
   const generateMutation = useMutation({
-    mutationFn: async (data: { timeMinutes: number; goal: string; platform: string; topic: string; style: string }) => {
+    mutationFn: async (data: { platform: string; topic: string; style: string }) => {
       const response = await apiRequest("POST", "/api/missions/generate", data);
       return response.json();
     },
@@ -56,7 +54,7 @@ export default function Home() {
   });
 
   const handleGenerate = () => {
-    if (!timeMinutes || !goal || !platform || !topic.trim() || !style) {
+    if (!platform || !topic.trim() || !style) {
       toast({
         title: "Incomplete Intel",
         description: "Fill in all fields to proceed.",
@@ -64,7 +62,7 @@ export default function Home() {
       });
       return;
     }
-    generateMutation.mutate({ timeMinutes, goal, platform, topic: topic.trim(), style });
+    generateMutation.mutate({ platform, topic: topic.trim(), style });
   };
 
   const copyToClipboard = async () => {
@@ -79,7 +77,7 @@ export default function Home() {
     }
   };
 
-  const isFormComplete = timeMinutes && goal && platform && topic.trim() && style;
+  const isFormComplete = platform && topic.trim() && style;
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
@@ -126,21 +124,6 @@ export default function Home() {
 
             <div className="space-y-2">
               <label className="text-sm font-medium flex items-center gap-2">
-                <MessageSquare className="w-4 h-4 text-muted-foreground" />
-                Topic
-              </label>
-              <Input
-                placeholder="e.g., Building online income, Networking tips"
-                value={topic}
-                onChange={(e) => setTopic(e.target.value)}
-                data-testid="input-topic"
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium flex items-center gap-2">
                 <Pen className="w-4 h-4 text-muted-foreground" />
                 Writing Style
               </label>
@@ -157,47 +140,19 @@ export default function Home() {
                 </SelectContent>
               </Select>
             </div>
+          </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-medium flex items-center gap-2">
-                <Target className="w-4 h-4 text-muted-foreground" />
-                Your Goal
-              </label>
-              <Select value={goal || ""} onValueChange={setGoal}>
-                <SelectTrigger data-testid="select-goal">
-                  <SelectValue placeholder="Select goal" />
-                </SelectTrigger>
-                <SelectContent>
-                  {GOAL_OPTIONS.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-sm font-medium flex items-center gap-2">
-                <Clock className="w-4 h-4 text-muted-foreground" />
-                Available Time
-              </label>
-              <Select
-                value={timeMinutes?.toString() || ""}
-                onValueChange={(value) => setTimeMinutes(parseInt(value))}
-              >
-                <SelectTrigger data-testid="select-time">
-                  <SelectValue placeholder="Select time" />
-                </SelectTrigger>
-                <SelectContent>
-                  {TIME_OPTIONS.map((option) => (
-                    <SelectItem key={option.value} value={option.value.toString()}>
-                      {option.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+          <div className="space-y-2">
+            <label className="text-sm font-medium flex items-center gap-2">
+              <MessageSquare className="w-4 h-4 text-muted-foreground" />
+              Topic
+            </label>
+            <Input
+              placeholder="e.g., Building online income, Networking tips, First 90 days in business"
+              value={topic}
+              onChange={(e) => setTopic(e.target.value)}
+              data-testid="input-topic"
+            />
           </div>
 
           <Button
@@ -231,14 +186,9 @@ export default function Home() {
                 Your Mission
               </CardTitle>
               {currentMission && (
-                <div className="flex items-center gap-2 flex-wrap">
-                  <Badge variant="outline" className="font-mono">
-                    {currentMission.timeMinutes} min
-                  </Badge>
-                  <Badge variant="secondary">
-                    {PLATFORM_OPTIONS.find(p => p.value === currentMission.platform)?.label || currentMission.platform}
-                  </Badge>
-                </div>
+                <Badge variant="secondary">
+                  {PLATFORM_OPTIONS.find(p => p.value === currentMission.platform)?.label || currentMission.platform}
+                </Badge>
               )}
             </div>
           </CardHeader>
