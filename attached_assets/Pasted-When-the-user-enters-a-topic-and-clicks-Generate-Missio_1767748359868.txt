@@ -1,0 +1,180 @@
+When the user enters a topic and clicks Generate Mission, the app must do ONE thing well:
+
+Teach something valuable about the topic in a clear, disciplined, military-style response.
+
+This is NOT motivational fluff.
+This is useful instruction veterans can act on today.
+
+Required Inputs (Only These)
+
+The generator uses exactly three inputs:
+
+Social media platform
+
+Topic
+
+Writing style
+
+Nothing else.
+
+Required Output Structure (Do Not Change)
+
+The response must always follow this structure and order:
+
+1) Teaching Response (Short, Clear, Valuable)
+
+3–5 short sentences
+
+Written like a calm instructor or squad leader
+
+Explains the topic in simple terms
+
+Focuses on what matters and why
+
+Reading level: 7th–8th grade
+
+No hype
+
+No em dashes
+
+No long paragraphs
+
+Purpose:
+Make the reader understand the topic better in under 20 seconds.
+
+2) Teaching Bullets (5–6 bullets only)
+
+Rules for bullets (very important):
+
+5 or 6 bullets only
+
+NOT numbered
+
+Each bullet must stand alone
+
+No em dashes
+
+No bullet depends on another bullet
+
+Each bullet teaches ONE idea
+
+Each bullet is actionable or clarifying
+
+Short sentences
+
+No filler
+
+Each bullet should answer one of these:
+
+What to do
+
+What to avoid
+
+What to focus on
+
+What most people get wrong
+
+What actually works
+
+3) Platform Posting Tip (One Line)
+
+One short sentence
+
+Specific to the selected platform
+
+Tells the user how to post this content
+
+Examples:
+
+Facebook: “Post the hook as the main post and add these bullets in the comments.”
+
+Instagram: “Use short lines so this is easy to read on a phone.”
+
+TikTok: “Use these bullets as talking points in a short video.”
+
+4) Soft CTA (One Line)
+
+Must be non-pushy and always include:
+
+Comment CTA using the word “VET”
+
+Optional soft mention of the Vet2Ceo community
+
+Examples:
+
+“Comment ‘VET’ if you want more missions like this.”
+
+“Comment ‘VET’ and join the Vet2Ceo community for daily direction.”
+
+Tone Rules (Must Always Follow)
+
+Military mindset, not drill sergeant yelling
+
+Calm, confident, disciplined
+
+Sounds like leadership, not a guru
+
+No emojis
+
+No slang
+
+No business buzzwords
+
+No em dashes anywhere
+
+Writing Style Behavior
+
+The selected writing style should affect tone only, not structure.
+
+Examples:
+
+Direct → straight facts, minimal emotion
+
+Motivational → confident and encouraging, still practical
+
+Tough Love → calls out mistakes without insults
+
+Funny/Relatable → light humor, still teaches
+
+Story → quick example, then lesson
+
+Authority/Coach → calm, teaching tone
+
+Structure stays the same every time.
+
+Example Output (For Clarity)
+
+If the topic is:
+“Starting digital marketing with no audience”
+
+The output should feel like this (not copied, just the style):
+
+Teaching Response
+Starting digital marketing without an audience is normal. Everyone starts at zero. The goal is not going viral. The goal is learning how to communicate clearly and consistently. Skills build faster than followers.
+
+Teaching Bullets
+• Focus on one platform instead of trying all of them
+• Teach simple lessons you already understand
+• Post even when no one is watching
+• Improve clarity before trying to be clever
+• Track what people respond to, not what gets likes
+
+Platform Tip
+On Facebook, post the idea first and place these bullets in the comments.
+
+CTA
+Comment “VET” if you want daily missions like this inside Vet2Ceo.
+
+What the Generator Should NEVER Do
+
+Never use numbered bullets
+
+Never use em dashes
+
+Never add extra sections
+
+Never add hashtags unless Instagram or TikTok is selected
+
+Never write long paragraphs
+
+Never sound like a motivational poster

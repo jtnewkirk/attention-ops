@@ -3,159 +3,113 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { generateMissionSchema } from "@shared/schema";
 
-// Platform-specific formatting
-function getPlatformBehavior(platform: string): { tone: string; suffix: string; cta: string } {
-  const behaviors: Record<string, { tone: string; suffix: string; cta: string }> = {
-    linkedin: { 
-      tone: "professional", 
-      suffix: "",
-      cta: "Comment 'VET' if this resonates. Join the Vet2Ceo community."
-    },
-    instagram: { 
-      tone: "short", 
-      suffix: "\n\n#Vet2Ceo #VeteranEntrepreneur #MilitaryBusiness #VetBiz #EntrepreneurLife #VeteranOwned #MissionDriven #BusinessVeteran",
-      cta: "Comment 'VET' below. Join the Vet2Ceo community."
-    },
-    twitter: { 
-      tone: "short", 
-      suffix: "",
-      cta: "Reply 'VET' if you're with us."
-    },
-    facebook: { 
-      tone: "text-first", 
-      suffix: "",
-      cta: "Comment 'VET' to connect with other veterans building businesses."
-    },
-    email: { 
-      tone: "direct", 
-      suffix: "",
-      cta: "Reply to this email with 'VET' to let us know you're taking action."
-    },
-    phone: { 
-      tone: "direct", 
-      suffix: "",
-      cta: "Ready to execute? Join the Vet2Ceo community."
-    },
-    in_person: { 
-      tone: "direct", 
-      suffix: "",
-      cta: "Take action today. Join the Vet2Ceo community."
-    },
+function getPlatformTip(platform: string): string {
+  const tips: Record<string, string> = {
+    linkedin: "On LinkedIn, post the teaching response first and add the bullets as a comment to boost engagement.",
+    instagram: "On Instagram, use short lines so this is easy to read on a phone. Add hashtags at the end.",
+    twitter: "On Twitter, post the hook first. Use a thread for the bullets if needed.",
+    facebook: "On Facebook, post the hook as the main post and add these bullets in the comments.",
+    email: "In email, use the teaching response as your opener and bullets as the body.",
+    phone: "On a call, use these bullets as talking points. Keep it conversational.",
+    in_person: "In person, lead with the main idea and use bullets to guide the conversation.",
   };
-  return behaviors[platform] || behaviors.in_person;
+  return tips[platform] || tips.in_person;
 }
 
-function getStyleModifier(style: string): { hookPrefix: string } {
-  const modifiers: Record<string, { hookPrefix: string }> = {
-    direct: { hookPrefix: "" },
-    motivational: { hookPrefix: "You've got this.\n" },
-    tactical: { hookPrefix: "" },
-    storytelling: { hookPrefix: "Picture this...\n" },
-  };
-  return modifiers[style] || modifiers.direct;
-}
-
-function formatPlatform(platform: string): string {
-  const platformNames: Record<string, string> = {
-    linkedin: "LinkedIn",
-    instagram: "Instagram",
-    twitter: "Twitter/X",
-    facebook: "Facebook",
-    email: "Email",
-    phone: "Phone",
-    in_person: "In-Person",
-  };
-  return platformNames[platform] || platform;
+function getHashtags(platform: string): string {
+  if (platform === "instagram") {
+    return "\n\n#Vet2Ceo #VeteranEntrepreneur #MilitaryBusiness #VetBiz #VeteranOwned";
+  }
+  return "";
 }
 
 function generateMissionText(platform: string, topic: string, style: string): string {
-  const platformBehavior = getPlatformBehavior(platform);
-  const styleModifier = getStyleModifier(style);
-  const platformName = formatPlatform(platform);
-  
-  const hooks = [
-    `Most vets post and pray.\nTop 1% post with a plan.`,
-    `Your audience is waiting.\nStop making them wait.`,
-    `You served your country.\nNow serve your audience.`,
-    `Likes don't pay bills.\nSales do.`,
-    `Your network is your net worth.\nTime to expand it.`,
-    `Content is your 24/7 salesperson.\nTime to put it to work.`,
-    `Your story is your superpower.\nTell it.`,
-    `Stop consuming. Start creating.\nYour audience needs you.`,
+  const teachingResponses: Record<string, string[]> = {
+    direct: [
+      `${topic} is not complicated. Most people overthink it. The goal is to understand the basics and take action today. Start with what you can control. Skills come from doing, not planning.`,
+      `${topic} comes down to a few simple things. Learn them. Practice them. Stop looking for shortcuts. Consistency beats talent when talent does not show up.`,
+      `${topic} is about execution, not theory. Know what matters. Ignore what does not. The people who win are the ones who keep moving forward.`,
+    ],
+    motivational: [
+      `You can learn ${topic} starting today. Everyone begins somewhere. The goal is progress, not perfection. Focus on small wins. They add up faster than you think.`,
+      `${topic} is something you can master with time and effort. Do not wait until you feel ready. Start now and adjust as you go. Confidence comes from action.`,
+      `${topic} might feel overwhelming at first. That is normal. Break it into smaller pieces. Focus on one thing at a time. You are more capable than you realize.`,
+    ],
+    tactical: [
+      `${topic} requires a clear process. Know what to do first. Know what to skip. Focus on high-value actions that move the needle. Everything else is noise.`,
+      `${topic} works best when you follow a system. Identify the steps. Execute in order. Review your results. Adjust and repeat.`,
+      `${topic} is about doing the right things in the right order. Most people waste time on low-priority tasks. Focus on what actually produces results.`,
+    ],
+    storytelling: [
+      `When I first learned about ${topic}, I made every mistake possible. Then I figured out what actually worked. The lesson was simple: stop overcomplicating things and focus on the basics.`,
+      `${topic} used to confuse me. Then I realized most advice out there is noise. Once I focused on the fundamentals, everything clicked. Here is what I learned.`,
+      `I spent months struggling with ${topic} until someone broke it down for me. The truth was simpler than I expected. Now I want to share that with you.`,
+    ],
+  };
+
+  const bulletSets: string[][] = [
+    [
+      `Focus on one area of ${topic} before expanding`,
+      `Learn by doing, not just reading or watching`,
+      `Track what works and do more of it`,
+      `Ignore advice from people who have not done it`,
+      `Start before you feel ready`,
+      `Review your progress weekly and adjust`,
+    ],
+    [
+      `Pick one method and stick with it for 30 days`,
+      `Avoid switching strategies too early`,
+      `Simple beats complicated every time`,
+      `Ask for feedback from people ahead of you`,
+      `Document what you learn as you go`,
+      `Expect mistakes and learn from them fast`,
+    ],
+    [
+      `Identify the one skill that matters most right now`,
+      `Remove distractions that slow you down`,
+      `Focus on progress over perfection`,
+      `Teach what you learn to lock it in`,
+      `Build habits that support your goal`,
+      `Measure results, not effort`,
+    ],
+    [
+      `Break ${topic} into smaller steps you can finish today`,
+      `Do not wait for permission to start`,
+      `Focus on action over planning`,
+      `Find one person doing this well and study them`,
+      `Accept that early work will be rough`,
+      `Improve 1% each day and trust the process`,
+    ],
   ];
 
-  const executions = [
-    [
-      `Create one post about ${topic} that provides real value.`,
-      `Find 5 veterans or entrepreneurs posting similar content. Engage genuinely.`,
-      `Share a lesson from your military experience that connects to ${topic}.`,
-      `End your content with a question to drive engagement.`,
-      `Reply to every comment within the first hour.`,
-    ],
-    [
-      `Write a hook that stops the scroll. Make it about ${topic}.`,
-      `Share 3 actionable tips your audience can use today.`,
-      `Tag 2 people who need to hear your message.`,
-      `Use platform-specific features (stories, polls, threads).`,
-      `Schedule your next piece of content before logging off.`,
-    ],
-    [
-      `Pick one angle on ${topic} you can speak on with authority.`,
-      `Outline 3 key points your audience needs to hear.`,
-      `Create the content (post, video, or article).`,
-      `Add a clear call-to-action at the end.`,
-      `Publish and engage with the first 5 commenters.`,
-    ],
-    [
-      `Think of a moment that shaped your perspective on ${topic}.`,
-      `Write it in 5 sentences or less. Keep it tight.`,
-      `Connect the story to a lesson your audience can use.`,
-      `End with a question to spark conversation.`,
-      `Post and reply to every comment within the hour.`,
-    ],
+  const ctas = [
+    `Comment "VET" if you want more missions like this.`,
+    `Comment "VET" and join the Vet2Ceo community for daily direction.`,
+    `Comment "VET" if this helped you see ${topic} more clearly.`,
+    `Comment "VET" to connect with veterans building their next chapter.`,
   ];
 
-  const hookIndex = Math.floor(Math.random() * hooks.length);
-  const execIndex = Math.floor(Math.random() * executions.length);
-  
-  const hook = styleModifier.hookPrefix + hooks[hookIndex];
-  const execution = executions[execIndex];
-  
-  const roe = platform === "instagram" 
-    ? `${platformName} rewards engagement. Post at peak hours and reply to every comment fast.`
-    : platform === "linkedin"
-    ? `${platformName} is professional. Lead with value, build relationships before selling.`
-    : platform === "facebook"
-    ? `${platformName} loves comments. Ask questions and respond to build thread momentum.`
-    : platform === "twitter"
-    ? `${platformName} moves fast. Be concise and engage with trending conversations.`
-    : `${platformName} is about personal connection. Be genuine and follow up promptly.`;
+  const responseIndex = Math.floor(Math.random() * teachingResponses[style]?.length || 0);
+  const bulletIndex = Math.floor(Math.random() * bulletSets.length);
+  const ctaIndex = Math.floor(Math.random() * ctas.length);
 
-  const formattedMission = `${hook}
+  const teachingResponse = teachingResponses[style]?.[responseIndex] || teachingResponses.direct[0];
+  const bullets = bulletSets[bulletIndex];
+  const platformTip = getPlatformTip(platform);
+  const cta = ctas[ctaIndex];
+  const hashtags = getHashtags(platform);
 
-OPERATION: CONTENT DEPLOY
+  const formattedBullets = bullets.map(b => `• ${b}`).join('\n');
 
-SITUATION:
-Platform: ${platformName}. Topic: ${topic}.
-Audience: U.S. military veterans transitioning into business and content.
-Goal: Help them take action today and feel confident.
+  const mission = `${teachingResponse}
 
-MISSION:
-Create and publish one piece of high-value content about ${topic}.
+${formattedBullets}
 
-EXECUTION:
-• ${execution[0]}
-• ${execution[1]}
-• ${execution[2]}
-• ${execution[3]}
-• ${execution[4]}
+${platformTip}
 
-RULES OF ENGAGEMENT:
-${roe}
+${cta}${hashtags}`;
 
-${platformBehavior.cta}${platformBehavior.suffix}`;
-
-  return formattedMission;
+  return mission;
 }
 
 export async function registerRoutes(
