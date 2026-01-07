@@ -6,34 +6,34 @@ import { generateMissionSchema } from "@shared/schema";
 function generateMissionText(platform: string, topic: string, style: string): string {
   const hooks: Record<string, string[]> = {
     viral: [
-      `Veterans already understand ${topic}.\nCivilians are still catching up.`,
-      `${topic} looks different when pressure is not new to you.`,
-      `${topic} rewards those who were trained to perform under stress.`,
+      `Why do veterans understand ${topic} faster than most?\nIt is not luck.`,
+      `What if ${topic} was never the hard part?\nMost people are solving the wrong problem.`,
+      `Ever wonder why some people get ${topic} instantly?\nThey were trained for it before they knew it.`,
     ],
     controversial: [
-      `Most advice about ${topic} is wrong.\nHere is what actually works.`,
-      `${topic} does not need more motivation.\nIt needs better execution.`,
-      `Stop overcomplicating ${topic}.\nThe basics still win.`,
+      `What if everything you learned about ${topic} was backwards?\nHere is what actually works.`,
+      `Why does the common advice on ${topic} keep failing?\nBecause it was never built for people like you.`,
+      `What if ${topic} does not need more effort?\nIt needs a different approach.`,
     ],
     educational: [
-      `${topic} comes down to a few things that actually matter.`,
-      `${topic} works when you stop skipping the fundamentals.`,
-      `${topic} gets easier once you understand the process.`,
+      `What makes ${topic} click for some and not others?\nIt comes down to a few things.`,
+      `Why does ${topic} feel harder than it should?\nMost people skip the basics.`,
+      `What separates people who get ${topic} from those who struggle?\nThe answer is simpler than you think.`,
     ],
     professional: [
-      `${topic} favors discipline over talent.`,
-      `${topic} rewards consistency, not intensity.`,
-      `${topic} follows patterns the unprepared never see.`,
+      `What patterns show up in people who master ${topic}?\nThe data tells a clear story.`,
+      `Why do some people see results in ${topic} faster?\nIt is not talent. It is process.`,
+      `What do the top performers in ${topic} have in common?\nConsistency over intensity.`,
     ],
     storytelling: [
-      `${topic} clicked once I stopped overthinking it.`,
-      `${topic} made sense after I learned from doing, not reading.`,
-      `${topic} changed when I focused on one thing at a time.`,
+      `What changed when I stopped overcomplicating ${topic}?\nEverything.`,
+      `Why did ${topic} finally click after years of struggle?\nI learned the hard way what actually matters.`,
+      `What did I wish someone told me about ${topic} earlier?\nThis.`,
     ],
     casual: [
-      `${topic} is simpler than people make it.`,
-      `${topic} does not require a perfect plan.`,
-      `${topic} starts with one step, not ten.`,
+      `What if ${topic} is simpler than everyone says?\nIt usually is.`,
+      `Why does ${topic} feel so overwhelming at first?\nYou are probably overthinking it.`,
+      `What is the fastest way to get better at ${topic}?\nStart before you feel ready.`,
     ],
   };
 
