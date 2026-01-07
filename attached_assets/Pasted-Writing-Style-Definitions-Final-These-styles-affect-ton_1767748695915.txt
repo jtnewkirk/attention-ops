@@ -1,0 +1,192 @@
+Writing Style Definitions (Final)
+
+These styles affect tone and word choice only.
+They do not change structure, length, or formatting.
+
+The generator must always:
+
+Teach first
+
+Stay simple
+
+Use 7–8th grade language
+
+Avoid em dashes
+
+Use 5–6 stand-alone bullets
+
+1) Viral & Engaging
+
+Purpose:
+Stop the scroll and pull attention without sounding clickbait.
+
+Tone Rules:
+
+Strong opening ideas
+
+Clear opinions
+
+Short, punchy sentences
+
+Feels urgent but grounded
+
+Easy to skim
+
+Behavior Guidelines:
+
+Say what most people feel but do not say out loud
+
+Use contrast and clarity
+
+Avoid hype words
+
+Example Feel:
+“Most people post content. Very few build skills. That is why results stay small.”
+
+2) Controversial / Bold
+
+Purpose:
+Challenge bad advice and common myths veterans hear online.
+
+Tone Rules:
+
+Confident and direct
+
+Calm, not aggressive
+
+Respectful but firm
+
+No insults
+
+Behavior Guidelines:
+
+Call out what is wrong or misunderstood
+
+Replace it with a better way
+
+Focus on truth over comfort
+
+Example Feel:
+“More content is not the answer. Better thinking is.”
+
+3) Educational / Teaching
+
+Purpose:
+Help the reader clearly understand the topic and how it works.
+
+Tone Rules:
+
+Calm instructor voice
+
+Step-by-step thinking
+
+Simple explanations
+
+No jargon
+
+Behavior Guidelines:
+
+Explain what something is
+
+Explain why it matters
+
+Explain how to use it
+
+Example Feel:
+“Digital marketing is not posting every day. It is learning how people make decisions.”
+
+4) Professional / Data Driven
+
+Purpose:
+Build credibility and trust with logic and facts.
+
+Tone Rules:
+
+Clear and confident
+
+Neutral emotion
+
+Precise language
+
+No slang
+
+Behavior Guidelines:
+
+Reference trends, patterns, or outcomes
+
+Keep numbers simple if used
+
+Focus on results and efficiency
+
+Example Feel:
+“Most creators quit before learning what works. Consistency over 90 days changes that.”
+
+5) Storytelling / Narrative
+
+Purpose:
+Teach through a short story or real-world example.
+
+Tone Rules:
+
+Personal and relatable
+
+Calm and reflective
+
+Focused on the lesson
+
+Behavior Guidelines:
+
+Start with a moment or situation
+
+Transition quickly to the lesson
+
+End with a clear takeaway
+
+Example Feel:
+“I posted for weeks with no response. That is when the skill actually started forming.”
+
+6) Casual / Conversational
+
+Purpose:
+Make the lesson feel easy and approachable.
+
+Tone Rules:
+
+Friendly and relaxed
+
+Short sentences
+
+Natural language
+
+Still professional
+
+Behavior Guidelines:
+
+Write like you are talking to one person
+
+Avoid slang or filler
+
+Keep it real
+
+Example Feel:
+“You do not need to overthink this. Start simple and stay consistent.”
+
+Global Style Rules (Apply to All)
+
+No matter the style, the generator must:
+
+Teach something useful
+
+Keep paragraphs short
+
+Use 5–6 stand-alone bullets
+
+Avoid em dashes
+
+Avoid numbered lists
+
+Avoid emojis
+
+Avoid hype language
+
+Avoid guru talk

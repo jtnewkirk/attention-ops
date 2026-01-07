@@ -74,16 +74,18 @@ export type Photo = typeof photos.$inferSelect;
 export const generateMissionSchema = z.object({
   platform: z.enum(["linkedin", "instagram", "twitter", "facebook", "email", "phone", "in_person"]),
   topic: z.string().min(1).max(100),
-  style: z.enum(["direct", "motivational", "tactical", "storytelling"]),
+  style: z.enum(["viral", "controversial", "educational", "professional", "storytelling", "casual"]),
 });
 
 export type GenerateMissionInput = z.infer<typeof generateMissionSchema>;
 
 export const STYLE_OPTIONS = [
-  { value: "direct", label: "Direct & No-Nonsense" },
-  { value: "motivational", label: "Motivational" },
-  { value: "tactical", label: "Tactical & Detailed" },
-  { value: "storytelling", label: "Storytelling" },
+  { value: "viral", label: "Viral & Engaging" },
+  { value: "controversial", label: "Controversial / Bold" },
+  { value: "educational", label: "Educational / Teaching" },
+  { value: "professional", label: "Professional / Data Driven" },
+  { value: "storytelling", label: "Storytelling / Narrative" },
+  { value: "casual", label: "Casual / Conversational" },
 ] as const;
 
 // Categories and options

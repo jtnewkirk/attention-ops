@@ -6,7 +6,7 @@ import { generateMissionSchema } from "@shared/schema";
 function getPlatformTip(platform: string): string {
   const tips: Record<string, string> = {
     linkedin: "On LinkedIn, post the teaching response first and add the bullets as a comment to boost engagement.",
-    instagram: "On Instagram, use short lines so this is easy to read on a phone. Add hashtags at the end.",
+    instagram: "On Instagram, use short lines so this is easy to read on a phone.",
     twitter: "On Twitter, post the hook first. Use a thread for the bullets if needed.",
     facebook: "On Facebook, post the hook as the main post and add these bullets in the comments.",
     email: "In email, use the teaching response as your opener and bullets as the body.",
@@ -25,25 +25,35 @@ function getHashtags(platform: string): string {
 
 function generateMissionText(platform: string, topic: string, style: string): string {
   const teachingResponses: Record<string, string[]> = {
-    direct: [
-      `${topic} is not complicated. Most people overthink it. The goal is to understand the basics and take action today. Start with what you can control. Skills come from doing, not planning.`,
-      `${topic} comes down to a few simple things. Learn them. Practice them. Stop looking for shortcuts. Consistency beats talent when talent does not show up.`,
-      `${topic} is about execution, not theory. Know what matters. Ignore what does not. The people who win are the ones who keep moving forward.`,
+    viral: [
+      `Most people talk about ${topic}. Very few actually do it well. That is why results stay small. The ones who win focus on skill, not noise. Stop scrolling. Start building.`,
+      `Everyone wants to understand ${topic}. Almost no one puts in the work. That is the gap. The people ahead of you are not smarter. They just started sooner and stayed consistent.`,
+      `${topic} is not complicated. It just requires doing what others skip. Most people chase trends. Winners build foundations. That is the difference.`,
     ],
-    motivational: [
-      `You can learn ${topic} starting today. Everyone begins somewhere. The goal is progress, not perfection. Focus on small wins. They add up faster than you think.`,
-      `${topic} is something you can master with time and effort. Do not wait until you feel ready. Start now and adjust as you go. Confidence comes from action.`,
-      `${topic} might feel overwhelming at first. That is normal. Break it into smaller pieces. Focus on one thing at a time. You are more capable than you realize.`,
+    controversial: [
+      `Most advice about ${topic} is wrong. People repeat what sounds good instead of what works. The truth is simpler. Focus on basics. Ignore the noise. Results follow action, not ideas.`,
+      `More content about ${topic} is not the answer. Better thinking is. The problem is not effort. The problem is direction. Fix that first.`,
+      `${topic} has been overcomplicated by people selling shortcuts. There are no shortcuts. There is only work done right. Stop looking for hacks. Start learning the fundamentals.`,
     ],
-    tactical: [
-      `${topic} requires a clear process. Know what to do first. Know what to skip. Focus on high-value actions that move the needle. Everything else is noise.`,
-      `${topic} works best when you follow a system. Identify the steps. Execute in order. Review your results. Adjust and repeat.`,
-      `${topic} is about doing the right things in the right order. Most people waste time on low-priority tasks. Focus on what actually produces results.`,
+    educational: [
+      `${topic} is about understanding how things work before trying to make them work for you. Start with the basics. Learn why, not just how. That knowledge lasts longer than any tactic.`,
+      `Understanding ${topic} means breaking it into smaller pieces. Each piece matters. Learn one at a time. Connect them later. This is how real skill forms.`,
+      `${topic} is not magic. It is a process. Learn the steps. Practice them. Adjust based on what you see. Improvement comes from repetition, not luck.`,
+    ],
+    professional: [
+      `${topic} works when approached with consistency and measurement. Most people quit before seeing results. Data shows that 90 days of focused effort changes outcomes. Stay the course.`,
+      `The difference in ${topic} comes down to process. Those who track progress outperform those who guess. Small improvements compound. Focus on what you can measure.`,
+      `${topic} rewards patience and precision. Rushing leads to waste. Slow, steady action with regular review produces better results than bursts of unfocused energy.`,
     ],
     storytelling: [
-      `When I first learned about ${topic}, I made every mistake possible. Then I figured out what actually worked. The lesson was simple: stop overcomplicating things and focus on the basics.`,
-      `${topic} used to confuse me. Then I realized most advice out there is noise. Once I focused on the fundamentals, everything clicked. Here is what I learned.`,
-      `I spent months struggling with ${topic} until someone broke it down for me. The truth was simpler than I expected. Now I want to share that with you.`,
+      `When I first started learning ${topic}, I made every mistake. I chased shortcuts. I copied others. Nothing worked. Then I focused on one thing at a time. That changed everything.`,
+      `I spent months confused about ${topic}. Everyone had different advice. Then I stopped listening and started doing. The lesson was clear: action teaches faster than theory.`,
+      `${topic} seemed impossible at first. I almost gave up. Then someone told me to focus on progress, not perfection. That shift made all the difference.`,
+    ],
+    casual: [
+      `You do not need to overthink ${topic}. Start simple. Stay consistent. Learn as you go. Most people make this harder than it needs to be. Keep it basic and keep moving.`,
+      `${topic} is not as scary as it looks. Everyone starts at zero. Just pick one thing to focus on today. Do that. Tomorrow, do a little more. That is the whole game.`,
+      `Here is the truth about ${topic}. You will not get it perfect. That is fine. The goal is progress. Do something small today. Build from there.`,
     ],
   };
 
@@ -89,11 +99,11 @@ function generateMissionText(platform: string, topic: string, style: string): st
     `Comment "VET" to connect with veterans building their next chapter.`,
   ];
 
-  const responseIndex = Math.floor(Math.random() * teachingResponses[style]?.length || 0);
+  const responseIndex = Math.floor(Math.random() * (teachingResponses[style]?.length || 1));
   const bulletIndex = Math.floor(Math.random() * bulletSets.length);
   const ctaIndex = Math.floor(Math.random() * ctas.length);
 
-  const teachingResponse = teachingResponses[style]?.[responseIndex] || teachingResponses.direct[0];
+  const teachingResponse = teachingResponses[style]?.[responseIndex] || teachingResponses.educational[0];
   const bullets = bulletSets[bulletIndex];
   const platformTip = getPlatformTip(platform);
   const cta = ctas[ctaIndex];
