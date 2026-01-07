@@ -245,7 +245,7 @@ export default function Home() {
             <div className="flex items-center justify-between gap-4 flex-wrap">
               <CardTitle className="flex items-center gap-2 text-xl">
                 <Crosshair className="w-5 h-5 text-primary" />
-                {selectedHistoryMission ? "Previous Mission" : "Your Mission"}
+                {selectedHistoryMission ? "Previous Mission" : "Your Missions"}
               </CardTitle>
               {displayedMission && (
                 <div className="flex items-center gap-2 flex-wrap">
