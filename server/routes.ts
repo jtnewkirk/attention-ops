@@ -204,10 +204,12 @@ export async function registerRoutes(
 
     const mission = await storage.createMission({
       missionText,
-      timeMinutes: 30, // Default value
-      goal: "create_content", // Default value
+      timeMinutes: 30,
+      goal: "create_content",
       platform,
+      topic,
       missionNumber: 0,
+      createdAt: new Date().toISOString(),
     });
 
     res.json(mission);

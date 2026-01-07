@@ -251,7 +251,13 @@ export class MemStorage implements IStorage {
   async createMission(mission: InsertGeneratedMission): Promise<GeneratedMission> {
     const id = randomUUID();
     this.missionCount++;
-    const newMission: GeneratedMission = { ...mission, id, missionNumber: this.missionCount };
+    const newMission: GeneratedMission = { 
+      ...mission, 
+      id, 
+      missionNumber: this.missionCount,
+      topic: mission.topic || "",
+      createdAt: mission.createdAt || new Date().toISOString(),
+    };
     this.missions.set(id, newMission);
     this.currentMission = newMission;
     return newMission;

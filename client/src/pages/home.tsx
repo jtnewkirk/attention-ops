@@ -14,8 +14,35 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
-import { Target, Crosshair, Smartphone, Copy, Check, Loader2, MessageSquare, Pen, History, ChevronRight } from "lucide-react";
+import { Target, Crosshair, Smartphone, Copy, Check, Loader2, MessageSquare, Pen, History, Edit3, Calendar } from "lucide-react";
 import { PLATFORM_OPTIONS, STYLE_OPTIONS, type GeneratedMission } from "@shared/schema";
+
+function formatDate(dateString: string): string {
+  if (!dateString) return "Today";
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMs / 3600000);
+  const diffDays = Math.floor(diffMs / 86400000);
+  
+  if (diffMins < 1) return "Just now";
+  if (diffMins < 60) return `${diffMins}m ago`;
+  if (diffHours < 24) return `${diffHours}h ago`;
+  if (diffDays === 1) return "Yesterday";
+  if (diffDays < 7) return `${diffDays}d ago`;
+  return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+}
+
+function getContentPreview(missionText: string): string {
+  const lines = missionText.split('\n').filter(line => line.trim());
+  const missionLine = lines.find(line => line.startsWith('MISSION:'));
+  if (missionLine) {
+    const content = missionLine.replace('MISSION:', '').trim();
+    return content.length > 60 ? content.substring(0, 60) + '...' : content;
+  }
+  return lines[0]?.substring(0, 60) + '...' || 'Mission content';
+}
 
 export default function Home() {
   const { toast } = useToast();
@@ -75,15 +102,26 @@ export default function Home() {
 
   const displayedMission = selectedHistoryMission || currentMission;
 
-  const copyToClipboard = async () => {
-    if (displayedMission?.missionText) {
-      await navigator.clipboard.writeText(displayedMission.missionText);
+  const copyToClipboard = async (missionText?: string) => {
+    const textToCopy = missionText || displayedMission?.missionText;
+    if (textToCopy) {
+      await navigator.clipboard.writeText(textToCopy);
       setCopied(true);
       toast({
         title: "Copied",
         description: "Mission copied to clipboard.",
       });
       setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
+  const handleEditMission = (mission: GeneratedMission) => {
+    setSelectedHistoryMission(mission);
+    if (mission.topic) {
+      setTopic(mission.topic);
+    }
+    if (mission.platform) {
+      setPlatform(mission.platform);
     }
   };
 
@@ -187,60 +225,9 @@ export default function Home() {
         </CardContent>
       </Card>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Mission History Sidebar */}
-        {missionHistory.length > 0 && (
-          <Card className="lg:col-span-1">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2 text-lg">
-                <History className="w-4 h-4 text-primary" />
-                Mission History
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-0">
-              <ScrollArea className="h-[400px]" data-testid="scroll-mission-history">
-                <div className="px-4 pb-4 space-y-2">
-                  {missionHistory.map((mission) => (
-                    <button
-                      key={mission.id}
-                      onClick={() => setSelectedHistoryMission(
-                        selectedHistoryMission?.id === mission.id ? null : mission
-                      )}
-                      className={`w-full text-left p-3 rounded-md border transition-colors ${
-                        selectedHistoryMission?.id === mission.id
-                          ? "bg-primary/10 border-primary"
-                          : "bg-muted/30 border-border hover-elevate"
-                      }`}
-                      data-testid={`button-history-mission-${mission.id}`}
-                    >
-                      <div className="flex items-center justify-between gap-2">
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
-                            <Badge variant="outline" className="text-xs">
-                              #{mission.missionNumber}
-                            </Badge>
-                            <Badge variant="secondary" className="text-xs">
-                              {PLATFORM_OPTIONS.find(p => p.value === mission.platform)?.label || mission.platform}
-                            </Badge>
-                          </div>
-                          <p className="text-sm text-muted-foreground truncate">
-                            {mission.missionText.split('\n')[0].substring(0, 40)}...
-                          </p>
-                        </div>
-                        <ChevronRight className={`w-4 h-4 text-muted-foreground flex-shrink-0 transition-transform ${
-                          selectedHistoryMission?.id === mission.id ? "rotate-90" : ""
-                        }`} />
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </ScrollArea>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* Mission Display */}
-        <Card className={`border-primary/50 ${missionHistory.length > 0 ? 'lg:col-span-2' : 'lg:col-span-3'}`}>
+      {/* Mission Display */}
+      {(displayedMission || missionLoading) && (
+        <Card className="border-primary/50 mb-8">
           <CardHeader className="pb-4">
             <div className="flex items-center justify-between gap-4 flex-wrap">
               <CardTitle className="flex items-center gap-2 text-xl">
@@ -268,7 +255,7 @@ export default function Home() {
               </div>
             ) : displayedMission ? (
               <div className="space-y-4">
-                <ScrollArea className="h-[350px]">
+                <ScrollArea className="h-[300px]">
                   <div className="bg-muted/50 rounded-md p-6 border border-border">
                     <pre className="text-base leading-relaxed whitespace-pre-wrap font-sans" data-testid="text-mission">
                       {displayedMission.missionText}
@@ -278,7 +265,7 @@ export default function Home() {
                 <div className="flex items-center gap-2 flex-wrap">
                   <Button
                     variant="outline"
-                    onClick={copyToClipboard}
+                    onClick={() => copyToClipboard()}
                     data-testid="button-copy-mission"
                   >
                     {copied ? (
@@ -312,7 +299,102 @@ export default function Home() {
             )}
           </CardContent>
         </Card>
-      </div>
+      )}
+
+      {/* Mission History */}
+      {missionHistory.length > 0 && (
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <History className="w-4 h-4 text-primary" />
+              Mission History
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-0">
+            <ScrollArea className="h-[320px]" data-testid="scroll-mission-history">
+              <div className="px-4 pb-4">
+                {/* Header Row */}
+                <div className="grid grid-cols-12 gap-2 py-2 px-3 text-xs font-medium text-muted-foreground border-b border-border mb-2">
+                  <div className="col-span-3">Topic</div>
+                  <div className="col-span-5">Content Preview</div>
+                  <div className="col-span-2">Date</div>
+                  <div className="col-span-2 text-right">Actions</div>
+                </div>
+                
+                {/* Mission Rows */}
+                <div className="space-y-1">
+                  {missionHistory.map((mission) => (
+                    <div
+                      key={mission.id}
+                      className={`grid grid-cols-12 gap-2 py-3 px-3 rounded-md border transition-colors items-center ${
+                        selectedHistoryMission?.id === mission.id
+                          ? "bg-primary/10 border-primary"
+                          : "bg-muted/30 border-border hover-elevate"
+                      }`}
+                      data-testid={`row-history-mission-${mission.id}`}
+                    >
+                      {/* Topic */}
+                      <div className="col-span-3">
+                        <p className="text-sm font-medium truncate" title={mission.topic || "General"}>
+                          {mission.topic || "General"}
+                        </p>
+                        <Badge variant="secondary" className="text-xs mt-1">
+                          {PLATFORM_OPTIONS.find(p => p.value === mission.platform)?.label || mission.platform}
+                        </Badge>
+                      </div>
+                      
+                      {/* Content Preview */}
+                      <button
+                        onClick={() => setSelectedHistoryMission(
+                          selectedHistoryMission?.id === mission.id ? null : mission
+                        )}
+                        className="col-span-5 text-left"
+                        data-testid={`button-preview-mission-${mission.id}`}
+                      >
+                        <p className="text-sm text-muted-foreground line-clamp-2">
+                          {getContentPreview(mission.missionText)}
+                        </p>
+                      </button>
+                      
+                      {/* Date */}
+                      <div className="col-span-2 flex items-center gap-1 text-xs text-muted-foreground">
+                        <Calendar className="w-3 h-3" />
+                        {formatDate(mission.createdAt)}
+                      </div>
+                      
+                      {/* Actions */}
+                      <div className="col-span-2 flex items-center justify-end gap-1">
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            copyToClipboard(mission.missionText);
+                          }}
+                          data-testid={`button-copy-history-${mission.id}`}
+                        >
+                          <Copy className="w-4 h-4" />
+                        </Button>
+                        <Button
+                          size="icon"
+                          variant="ghost"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleEditMission(mission);
+                          }}
+                          data-testid={`button-edit-history-${mission.id}`}
+                        >
+                          <Edit3 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </ScrollArea>
+          </CardContent>
+        </Card>
+      )}
 
       {!displayedMission && !missionLoading && missionHistory.length === 0 && (
         <div className="text-center py-12">

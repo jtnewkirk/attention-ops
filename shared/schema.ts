@@ -42,7 +42,9 @@ export const generatedMissions = pgTable("generated_missions", {
   timeMinutes: integer("time_minutes").notNull(),
   goal: text("goal").notNull(),
   platform: text("platform").notNull(),
+  topic: text("topic").notNull().default(""),
   missionNumber: integer("mission_number").notNull(),
+  createdAt: text("created_at").notNull().default(""),
 });
 
 export const insertGeneratedMissionSchema = createInsertSchema(generatedMissions).omit({
