@@ -201,6 +201,9 @@ export default function Home() {
               onChange={(e) => setTopic(e.target.value)}
               data-testid="input-topic"
             />
+            <p className="text-xs text-muted-foreground">
+              Type your idea, not your hook. The generator writes the hook for you.
+            </p>
           </div>
 
           <Button

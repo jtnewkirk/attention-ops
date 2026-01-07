@@ -1,0 +1,132 @@
+The Simple Fix: “Hook Rules” + “Hook Patterns” + “Rewrite Gate”
+1) Add these Hook Rules (paste into your system instructions)
+
+The hook must be a bold statement, not a label.
+
+The hook must not contain the full topic phrase.
+
+The hook must not start with “Why” or “How”.
+
+The hook must not include the words “Topic:” or restate the prompt.
+
+The hook must be 1–2 lines and sound like a headline.
+
+No em dashes.
+
+2) Force it to choose one Hook Pattern (this matters)
+
+Tell it: “Pick ONE of these patterns and write the hook.”
+
+Use these patterns (they’re designed to prevent topic restating):
+
+Pattern A: Hidden Truth
+
+“The reason X wins has nothing to do with Y.”
+
+Pattern B: Identity Contrast
+
+“Most people need motivation. Veterans run on standards.”
+
+Pattern C: Pressure Advantage
+
+“Business pressure breaks most people. Veterans treat it like Tuesday.”
+
+Pattern D: Cost of Comfort
+
+“Comfort creates hesitation. Training creates action.”
+
+Pattern E: Unfair Advantage
+
+“Some people learn leadership in books. Veterans learn it under pressure.”
+
+Pattern F: Outcome First
+
+“The fastest path to CEO-level results is not talent. It’s discipline.”
+
+Each pattern forces a hook that is a statement, not the topic.
+
+3) Add a “Hook Rewrite Gate” (this is the real secret)
+
+Tell the model it must run a quick check:
+
+Hook Quality Check (internal):
+
+If the hook repeats the topic or starts with “Why/How”, rewrite it.
+
+If the hook includes the phrase “veterans make better CEOs”, rewrite it.
+
+If the hook sounds like a title, rewrite it.
+
+Only output the final hook once it passes.
+
+You’re basically telling it: “Do not show me your first draft.”
+
+The Best Prompt Template (Plain English)
+
+Use this structure in your generator prompt:
+
+Inputs:
+Platform: {platform}
+Topic: {topic}
+Style: {style}
+
+Output rules:
+
+Output only: Hook + 5–8 stand-alone bullets
+
+No em dashes
+
+Bullets are not numbered
+
+Bullets stand alone
+
+Hook is 1–2 lines
+
+Hook must NOT restate the topic
+
+Hook creation rules:
+
+Choose ONE hook pattern from the list (A–F)
+
+Write hook using that pattern
+
+Run Hook Quality Check
+
+If it fails, rewrite until it passes
+
+Example: Your Topic, Done Correctly (no topic restate)
+
+Topic: why veterans make better CEOs than civilians
+
+Hook
+Leadership under pressure is not a talent. It is trained.
+
+Bullets
+• Veterans make decisions with incomplete information
+• Standards stay steady when motivation drops
+• Accountability is normal, not personal
+• Stress is handled without panic
+• Teams come before ego
+• Plans change fast and execution stays calm
+• Failure becomes feedback instead of drama
+
+Notice: it never repeats the topic phrase.
+
+If you want an even stronger lock (best option)
+
+Add one more rule:
+
+“Hook cannot contain more than 3 words found in the topic.”
+
+That prevents copying.
+
+Example topic words: veterans, better, CEOs, civilians
+Hook can use “veterans” but not the full phrase.
+
+Quick practical tip for Replit
+
+In your UI, add a tiny helper line under the topic box:
+
+“Do not type your hook. Type your idea. The generator writes the hook.”
+
+Because when users type “Why veterans make better CEOs…” they feed the model a title-shaped topic.

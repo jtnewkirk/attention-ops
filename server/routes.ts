@@ -4,36 +4,55 @@ import { storage } from "./storage";
 import { generateMissionSchema } from "@shared/schema";
 
 function generateMissionText(platform: string, topic: string, style: string): string {
-  const hooks: Record<string, string[]> = {
+  // Hook patterns that never restate the topic
+  const hookPatterns: Record<string, string[]> = {
     viral: [
-      `Why do veterans understand ${topic} faster than most?\nIt is not luck.`,
-      `What if ${topic} was never the hard part?\nMost people are solving the wrong problem.`,
-      `Ever wonder why some people get ${topic} instantly?\nThey were trained for it before they knew it.`,
+      // Pattern B: Identity Contrast
+      `Most people need motivation.\nVeterans run on standards.`,
+      // Pattern C: Pressure Advantage
+      `Business pressure breaks most people.\nVeterans treat it like Tuesday.`,
+      // Pattern E: Unfair Advantage
+      `Some people learn leadership in books.\nVeterans learn it under fire.`,
     ],
     controversial: [
-      `What if everything you learned about ${topic} was backwards?\nHere is what actually works.`,
-      `Why does the common advice on ${topic} keep failing?\nBecause it was never built for people like you.`,
-      `What if ${topic} does not need more effort?\nIt needs a different approach.`,
+      // Pattern A: Hidden Truth
+      `The reason most fail has nothing to do with skill.\nIt is discipline.`,
+      // Pattern D: Cost of Comfort
+      `Comfort creates hesitation.\nTraining creates action.`,
+      // Pattern A: Hidden Truth
+      `Success is not about working harder.\nIt is about thinking clearer.`,
     ],
     educational: [
-      `What makes ${topic} click for some and not others?\nIt comes down to a few things.`,
-      `Why does ${topic} feel harder than it should?\nMost people skip the basics.`,
-      `What separates people who get ${topic} from those who struggle?\nThe answer is simpler than you think.`,
+      // Pattern F: Outcome First
+      `The fastest path to results is not talent.\nIt is consistency.`,
+      // Pattern A: Hidden Truth
+      `Progress stalls when basics get skipped.\nFundamentals fix everything.`,
+      // Pattern F: Outcome First
+      `Mastery comes from repetition, not revelation.\nDo the work.`,
     ],
     professional: [
-      `What patterns show up in people who master ${topic}?\nThe data tells a clear story.`,
-      `Why do some people see results in ${topic} faster?\nIt is not talent. It is process.`,
-      `What do the top performers in ${topic} have in common?\nConsistency over intensity.`,
+      // Pattern F: Outcome First
+      `The fastest path to CEO-level results is not talent.\nIt is discipline.`,
+      // Pattern A: Hidden Truth
+      `High performers share one trait.\nThey measure what matters.`,
+      // Pattern F: Outcome First
+      `Consistency beats intensity every time.\nThe data proves it.`,
     ],
     storytelling: [
-      `What changed when I stopped overcomplicating ${topic}?\nEverything.`,
-      `Why did ${topic} finally click after years of struggle?\nI learned the hard way what actually matters.`,
-      `What did I wish someone told me about ${topic} earlier?\nThis.`,
+      // Pattern D: Cost of Comfort
+      `Comfort kept me stuck for years.\nPressure forced the breakthrough.`,
+      // Pattern A: Hidden Truth
+      `The turning point was not a new strategy.\nIt was dropping the excuses.`,
+      // Pattern E: Unfair Advantage
+      `Experience taught what no book could.\nFailure was the real teacher.`,
     ],
     casual: [
-      `What if ${topic} is simpler than everyone says?\nIt usually is.`,
-      `Why does ${topic} feel so overwhelming at first?\nYou are probably overthinking it.`,
-      `What is the fastest way to get better at ${topic}?\nStart before you feel ready.`,
+      // Pattern D: Cost of Comfort
+      `Overthinking is the enemy.\nAction is the cure.`,
+      // Pattern B: Identity Contrast
+      `Most people wait to feel ready.\nThe successful start anyway.`,
+      // Pattern A: Hidden Truth
+      `The secret is not complicated.\nIt is just not popular.`,
     ],
   };
 
@@ -83,10 +102,10 @@ function generateMissionText(platform: string, topic: string, style: string): st
     ],
   ];
 
-  const hookIndex = Math.floor(Math.random() * (hooks[style]?.length || 1));
+  const hookIndex = Math.floor(Math.random() * (hookPatterns[style]?.length || 1));
   const bulletIndex = Math.floor(Math.random() * bulletSets.length);
 
-  const hook = hooks[style]?.[hookIndex] || hooks.educational[0];
+  const hook = hookPatterns[style]?.[hookIndex] || hookPatterns.educational[0];
   const bullets = bulletSets[bulletIndex];
 
   const formattedBullets = bullets.map(b => `• ${b}`).join('\n');
