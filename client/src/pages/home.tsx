@@ -410,6 +410,27 @@ export default function Home() {
           </p>
         </div>
       )}
+
+      {/* Affiliate Box */}
+      <Card className="mt-8 border-primary/30">
+        <CardContent className="p-6">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="text-center sm:text-left">
+              <h3 className="text-lg font-semibold mb-1">Earn Money as a Mission Generator Affiliate</h3>
+              <p className="text-sm text-muted-foreground">
+                Share Vet2Ceo with fellow veterans and earn 50% commission on every referral.
+              </p>
+            </div>
+            <Button
+              variant="default"
+              onClick={() => window.open('https://vet2ceo.com/affiliate?ref=mission-generator&commission=50', '_blank')}
+              data-testid="button-become-affiliate"
+            >
+              Become an Affiliate
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
