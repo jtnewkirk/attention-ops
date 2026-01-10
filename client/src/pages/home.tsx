@@ -130,10 +130,6 @@ export default function Home() {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
       <div className="text-center mb-10">
-        <Badge variant="secondary" className="mb-4" data-testid="badge-mission-count">
-          <Target className="w-3 h-3 mr-1" />
-          Mission #{missionCount + 1} Today
-        </Badge>
         <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4" data-testid="text-hero-title">
           Daily Mission Generator
         </h1>
