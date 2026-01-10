@@ -131,7 +131,7 @@ export default function Home() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
       <div className="text-center mb-10">
         <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-4" data-testid="text-hero-title">
-          Daily Mission Generator
+          Attention Ops
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
           Type in a topic and AI will generate a thread using a viral format for your social media.
