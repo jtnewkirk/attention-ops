@@ -138,7 +138,7 @@ export default function Home() {
           Daily Mission Generator
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Built for U.S. military veterans transitioning into business and content.
+          Type in a topic and AI will generate a thread using a viral format for your social media.
         </p>
       </div>
 
