@@ -40,3 +40,8 @@ waitForPort = 5000
 
 [agent]
 integrations = ["stripe:2.0.0"]
+
+[userenv]
+
+[userenv.production]
+STRIPE_PUBLISHABLE_KEY = "pk_live_51SoW9ORgqRb4uM4I9CRBHVdjQrFSNBeYrU8Qj4ZXhG4pfeS8i17IpcYANDPg8263tGzUFeC3hLvNlTyutRWl3j8A00cTwWO4w2"
