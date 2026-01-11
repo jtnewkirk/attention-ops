@@ -3,11 +3,21 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import Templates from "@/pages/templates";
 import Gallery from "@/pages/gallery";
-import { Target, FileText, Image } from "lucide-react";
+import FAQ from "@/pages/faq";
+import Account from "@/pages/account";
+import Billing from "@/pages/billing";
+import { Target, FileText, Image, HelpCircle, User, CreditCard } from "lucide-react";
 
 function Navigation() {
   const [location] = useLocation();
@@ -55,6 +65,40 @@ function Navigation() {
               );
             })}
           </nav>
+
+          <div className="flex items-center gap-2">
+            <Link href="/faq">
+              <Button variant="ghost" size="icon" data-testid="button-help">
+                <HelpCircle className="w-5 h-5" />
+              </Button>
+            </Link>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" data-testid="button-profile">
+                  <User className="w-5 h-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem
+                  onClick={() => window.location.href = '/account'}
+                  className="flex items-center gap-2 cursor-pointer"
+                  data-testid="link-account"
+                >
+                  <User className="w-4 h-4" />
+                  Account
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => window.location.href = '/billing'}
+                  className="flex items-center gap-2 cursor-pointer"
+                  data-testid="link-billing"
+                >
+                  <CreditCard className="w-4 h-4" />
+                  Billing
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </div>
       </div>
     </header>
@@ -122,6 +166,9 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/templates" component={Templates} />
       <Route path="/gallery" component={Gallery} />
+      <Route path="/faq" component={FAQ} />
+      <Route path="/account" component={Account} />
+      <Route path="/billing" component={Billing} />
       <Route component={NotFound} />
     </Switch>
   );
