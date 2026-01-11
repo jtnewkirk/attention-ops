@@ -33,7 +33,7 @@ const faqs = [
   },
   {
     question: "How do I contact support?",
-    answer: "For support questions, reach out to the Vet2Ceo community or email support@vet2ceo.com."
+    answer: "For support questions, reach out to the Vet2Ceo community or email Joe@vet2ceo.com."
   }
 ];
 
