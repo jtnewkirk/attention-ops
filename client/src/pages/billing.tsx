@@ -228,7 +228,7 @@ export default function Billing() {
             <div className="flex items-center justify-between" data-testid="row-status">
               <span className="text-muted-foreground">Status</span>
               <Badge variant="secondary" data-testid="badge-status">
-                Free Plan
+                7 Day Free Trial
               </Badge>
             </div>
           </CardContent>
